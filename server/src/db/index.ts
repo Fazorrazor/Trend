@@ -12,25 +12,40 @@ let _pool: pkg.Pool | null = null;
 
 function getPool() {
     if (!_pool) {
+        const isProduction = process.env.NODE_ENV === 'production';
+        const connectionString = process.env.DATABASE_URL;
+
+        const config: pkg.PoolConfig = connectionString
+            ? { connectionString }
+            : {
+                host: process.env.DB_HOST || 'localhost',
+                port: parseInt(process.env.DB_PORT || '5432'),
+                database: process.env.DB_NAME || 'trend_analytics',
+                user: process.env.DB_USER || 'postgres',
+                password: process.env.DB_PASSWORD || 'postgres',
+            };
+
         _pool = new Pool({
-            host: process.env.DB_HOST || 'localhost',
-            port: parseInt(process.env.DB_PORT || '5432'),
-            database: process.env.DB_NAME || 'trend_analytics',
-            user: process.env.DB_USER || 'postgres',
-            password: process.env.DB_PASSWORD || 'postgres',
+            ...config,
             max: 20,
             idleTimeoutMillis: 30000,
             connectionTimeoutMillis: 2000,
+            ssl: isProduction ? { rejectUnauthorized: false } : false,
         });
 
-        // Debug: Log connection config (mask password)
-        console.log('📊 Database Config:', {
-            host: process.env.DB_HOST || 'localhost',
-            port: process.env.DB_PORT || '5432',
-            database: process.env.DB_NAME || 'trend_analytics',
-            user: process.env.DB_USER || 'postgres',
-            password: process.env.DB_PASSWORD ? '***' + process.env.DB_PASSWORD.slice(-4) : 'NOT SET'
-        });
+        // Debug: Log connection config (mask sensitive info)
+        if (connectionString) {
+            console.log('📊 Database Config: Using connection string (SSL: ' + (isProduction ? 'YES' : 'NO') + ')');
+        } else {
+            console.log('📊 Database Config:', {
+                host: process.env.DB_HOST || 'localhost',
+                port: process.env.DB_PORT || '5432',
+                database: process.env.DB_NAME || 'trend_analytics',
+                user: process.env.DB_USER || 'postgres',
+                password: process.env.DB_PASSWORD ? '***' + process.env.DB_PASSWORD.slice(-4) : 'NOT SET',
+                ssl: isProduction ? 'YES' : 'NO'
+            });
+        }
 
         // Test connection
         _pool.on('connect', () => {

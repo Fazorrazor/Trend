@@ -28,7 +28,7 @@ export async function comparePassword(password: string, hash: string): Promise<b
  * Generate a JWT token
  */
 export function generateToken(payload: TokenPayload): string {
-    return jwt.sign(payload, JWT_SECRET, { expiresIn: JWT_EXPIRES_IN });
+    return jwt.sign(payload, JWT_SECRET as string, { expiresIn: JWT_EXPIRES_IN as any });
 }
 
 /**

@@ -1,7 +1,7 @@
 import { useState, useEffect, useRef } from 'react';
 import { Edit2, Save, X, Plus, Trash2 } from 'lucide-react';
 import { api } from '../../lib/api';
-import { useAuth } from '../../contexts/AuthContext';
+
 
 interface Finding {
   id?: string;
@@ -24,7 +24,7 @@ export function EditableKeyFindings({
   automatedInsights,
   importId
 }: EditableKeyFindingsProps) {
-  const { user } = useAuth();
+
   const [isEditing, setIsEditing] = useState(false);
   const [findings, setFindings] = useState<Finding[]>([]);
   const [loading, setLoading] = useState(true);

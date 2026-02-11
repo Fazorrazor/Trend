@@ -23,7 +23,7 @@ const PORT = process.env.PORT || 4000;
 app.use(helmet());
 
 // CORS configuration
-const allowedOrigins = (process.env.CORS_ORIGIN || 'http://localhost:5173').split(',');
+const allowedOrigins = (process.env.CORS_ORIGIN || 'http://localhost:5173,https://fazorrazor.github.io').split(',');
 app.use(cors({
     origin: (origin, callback) => {
         // Allow requests with no origin (like mobile apps or curl)

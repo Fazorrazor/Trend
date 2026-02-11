@@ -11,8 +11,12 @@ const envPath = join(__dirname, '..', '.env');
 const result = dotenv.config({ path: envPath });
 
 if (result.error) {
-    console.error('❌ Failed to load .env file:', result.error);
-    console.log('📁 Tried path:', envPath);
+    if (process.env.NODE_ENV !== 'production') {
+        console.error('❌ Failed to load .env file:', result.error);
+        console.log('📁 Tried path:', envPath);
+    } else {
+        console.log('ℹ️ No .env file found (expected in production)');
+    }
 } else {
     console.log('✅ .env file loaded from:', envPath);
 }

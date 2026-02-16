@@ -37,13 +37,7 @@ CREATE TABLE IF NOT EXISTS cluster_affiliate_mapping (
   UNIQUE(cluster, affiliate)
 );
 
--- Insert default cluster-affiliate mappings
-INSERT INTO cluster_affiliate_mapping (cluster, affiliate) VALUES
-  ('Cluster A', 'Affiliate 1'),
-  ('Cluster A', 'Affiliate 2'),
-  ('Cluster B', 'Affiliate 3'),
-  ('Cluster B', 'Affiliate 4')
-ON CONFLICT DO NOTHING;
+-- Users can add their own cluster-affiliate mappings through the UI
 
 -- ============================================================================
 -- TICKET DATA TABLE

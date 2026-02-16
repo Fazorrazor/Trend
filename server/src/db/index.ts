@@ -29,7 +29,7 @@ function getPool() {
             ...config,
             max: 20,
             idleTimeoutMillis: 30000,
-            connectionTimeoutMillis: 2000,
+            connectionTimeoutMillis: 10000, // Increased to 10s
             ssl: isProduction ? { rejectUnauthorized: false } : false,
         });
 
